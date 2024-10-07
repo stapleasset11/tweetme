@@ -78,10 +78,12 @@
             }
             // console.log(errorJson)
         
-        }else if (xhr.status === 500) {
+        }else if (xhr.status === 401) {
+            alert("login to continue")
+            window.location.href = '/login'
+        } else if (xhr.status === 500) {
             alert("There was a server error,Please try again")
         }
-
 
 
         xhr.onerror = function() {

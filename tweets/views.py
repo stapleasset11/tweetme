@@ -24,13 +24,22 @@ def is_safe_url(url, allowed_hosts=None, require_https=False):
 
 # Create your views here.
 def home_view(request,*args,**kwargs):
+    print(request.user)
     return render(request, "pages/home.html",context={},status=200)
 
 def tweet_create_view(request,*args,**kwargs):
+    # Check if the request is AJAX
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+    user = request.user
+    if not request.user.is_authenticated:
+        user = None
+        if is_ajax:
+            return JsonResponse({}, status=401)
+        return redirect(settings.LOGIN_URL)
 
     # ***********************************************************
-     # Check if the request is AJAX
-    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+    #  # Check if the request is AJAX
+    # is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
     #************************************************************
     form = TweetForm(request.POST or None)
     next_url = request.POST.get("next") or None
@@ -38,6 +47,7 @@ def tweet_create_view(request,*args,**kwargs):
     if form.is_valid():
         
         obj = form.save(commit=False)
+        obj.user = user
         obj.save()
         if is_ajax:
             return JsonResponse(obj.serialize(),status=201)
