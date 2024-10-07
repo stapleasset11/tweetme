@@ -11,5 +11,5 @@ class TweetForm(forms.ModelForm):
     def clean_content(self):
         content = self.cleaned_data.get('content')
         if len(content) > MAX_TWEET_LENGTH:
-            raise forms.ValueError("The tweet exceeds the required character limit")
+            raise forms.ValidationError("The tweet exceeds the required character limit")
         return content
