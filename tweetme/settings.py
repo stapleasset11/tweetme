@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','.mydomain.com']
 LOGIN_URL = ['/login']
+MAX_TWEET_LENGTH = 50
 
 
 # Application definition
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
 
     #apps
     'tweets',
+    #thrid party extensions
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
