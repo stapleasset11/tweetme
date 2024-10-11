@@ -22,11 +22,31 @@
     </div>
 </div>
 
+<br>
 
 <div class="row" id="tweets">
     Replace meee!!!!
 </div>
 <script>
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+
     function handleTweetFormError(msg,display){
         var myErrorDiv = document.getElementById("tweet-create-form-error")
         if (display === true){
@@ -81,8 +101,13 @@
         }else if (xhr.status === 401) {
             alert("login to continue")
             window.location.href = '/login'
-        } else if (xhr.status === 500) {
+        } else if (xhr.status === 403) {
+            alert("login to continue")
+            window.location.href = '/login'
+        
+        }else if (xhr.status === 500) {
             alert("There was a server error,Please try again")
+        
         }
 
 
@@ -130,9 +155,26 @@
 
     loadTweets(tweetsContainerElement)
     
-    function handleDidLike(tweet_id,curreCount){
-        console.log(tweet_id,curreCount)
-
+    function handleDidLike(tweet_id,currentCount){
+        console.log(tweet_id,currentCount)
+        const url = "api/tweets/likes"
+        const method = "POST"
+        const data = JSON.stringify({
+            id:tweet_id,
+            action: "like"
+        })
+        const xhr = new XMLHttpRequest()
+        xhr.open(method,url)
+        xhr.setRequestHeader("Content-Type","application/json")
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH","XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With","XMLHttpRequest")
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        xhr.onload = function(){
+            // react.js this function to state much better
+            console.log(xhr.status,xhr.response)
+        }
+        xhr.send(data)
+        return
     }
 
     function LikeBtn(tweet){
