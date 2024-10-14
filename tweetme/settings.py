@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(+=h0dwvw9b=u+m#%df7@n&puwd^sc7!8)b)imsy8y08=&a%=i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','.mydomain.com']
+ALLOWED_HOSTS = ['127.0.0.1','.mydomain.com','localhost']
 LOGIN_URL = ['/login']
 
 MAX_TWEET_LENGTH = 50
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     #apps
     'tweets',
+    "corsheaders",
     #thrid party extensions
     'rest_framework',
 ]
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -125,6 +127,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_URLS_REGEX = r"^/api/.*$"
+
 
 DEFAULT_RENDERER_CLASSES = [
     'rest_framework.renderers.JSONRenderer',
