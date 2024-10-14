@@ -1,8 +1,8 @@
-*TweetMe
+**TweetMe**
 
 TweetMe is a web application that replicates the core functionalities of Twitter, built using the Django framework with Django REST Framework for the backend, and Node.js for handling client-side interactions. This project showcases a full-stack implementation, allowing users to authenticate, create, read, and interact with tweets.
 
-#Features
+**Features**
 User authentication (registration, login, logout)
 Create, read, and delete tweets
 Like and unlike tweets
